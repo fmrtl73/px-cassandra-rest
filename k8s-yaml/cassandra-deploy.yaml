@@ -36,7 +36,7 @@ spec:
           name: cassandra-rest-api
           env:
             - name: cassandra_port
-              value: 9042
+              value: '9042'
             - name: cassandra_contactpoints
               value: px-cassandra-svc
             - name: cassandra_keyspace
