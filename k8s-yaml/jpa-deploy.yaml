@@ -1,0 +1,41 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jpa-rest-api
+  labels:
+    app: px-jpa-rest
+spec:
+  ports:
+    - port: 8080
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: jpa-rest-api
+    tier: compute
+  type: LoadBalancer
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: jpa-rest-api
+  labels:
+    app: px-jpa-rest
+spec:
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: jpa-rest-api
+        tier: compute
+    spec:
+      containers:
+        - image: fmrtl73/px-jpa-rest:latest
+          imagePullPolicy: Always
+          name: jpa-rest-api
+          env:
+            - name: spring_profiles_active
+              value: prod
+          ports:
+            - containerPort: 8080
