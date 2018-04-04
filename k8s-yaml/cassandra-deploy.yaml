@@ -13,7 +13,7 @@ spec:
   selector:
     app: cassandra-rest-api
     tier: compute
-  type: LoadBalancer
+  type: NodePort
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
@@ -36,9 +36,9 @@ spec:
           name: cassandra-rest-api
           env:
             - name: cassandra_port
-              value: 9042
+              value: '9042'
             - name: cassandra_contactpoints
-              value: px-cassandra-svc
+              value: px-cassandra
             - name: cassandra_keyspace
               value: people
           ports:
