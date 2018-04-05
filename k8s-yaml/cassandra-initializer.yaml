@@ -1,0 +1,47 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cassandra-rest-api
+  labels:
+    app: px-cassandra-rest
+spec:
+  ports:
+    - port: 8080
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: cassandra-rest-api
+    tier: compute
+  type: NodePort
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: cassandra-rest-api
+  labels:
+    app: px-cassandra-rest
+spec:
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: cassandra-rest-api
+        tier: compute
+    spec:
+      containers:
+        - image: fmrtl73/px-cassandra-rest:latest
+          imagePullPolicy: Always
+          name: cassandra-rest-api
+          env:
+            - name: cassandra_port
+              value: '9042'
+            - name: cassandra_contactpoints
+              value: px-cassandra
+            - name: cassandra_keyspace
+              value: people
+            - name: dataloader_numberofrecords
+              value: '1000000'
+          ports:
+            - containerPort: 8080
