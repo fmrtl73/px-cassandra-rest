@@ -32,10 +32,9 @@ public class CassandraConfig {
     protected String getKeyspaceName() {
         return environment.getProperty("cassandra.keyspace");
     }
-
+    static CassandraClusterFactoryBean cluster = new CassandraClusterFactoryBean();;
     @Bean
     public CassandraClusterFactoryBean cluster() {
-        final CassandraClusterFactoryBean cluster = new CassandraClusterFactoryBean();
         cluster.setContactPoints(environment.getProperty("cassandra.contactpoints"));
         cluster.setPort(Integer.parseInt(environment.getProperty("cassandra.port")));
         LOGGER.info("Cluster created with contact points [" + environment.getProperty("cassandra.contactpoints") + "] " + "& port [" + Integer.parseInt(environment.getProperty("cassandra.port")) + "].");
