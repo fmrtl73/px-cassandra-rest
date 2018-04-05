@@ -1,6 +1,0 @@
-px/rest/apis/cassandra/Application.class
-px/rest/apis/cassandra/DataLoader.class
-px/rest/apis/cassandra/Person.class
-px/rest/apis/cassandra/Address.class
-px/rest/apis/cassandra/PersonRepository.class
-px/rest/apis/cassandra/CassandraConfig.class
