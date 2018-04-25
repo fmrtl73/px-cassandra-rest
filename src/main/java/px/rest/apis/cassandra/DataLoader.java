@@ -1,5 +1,7 @@
 package px.rest.apis.cassandra;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import java.util.UUID;
 import org.springframework.boot.*;
 import org.springframework.stereotype.*;
@@ -10,6 +12,7 @@ import java.util.Random;
 
 @Component
 public class DataLoader implements CommandLineRunner {
+  private static final Log LOGGER = LogFactory.getLog(DataLoader.class);
   @Autowired
   private Environment environment;
   @Autowired
@@ -22,7 +25,9 @@ public class DataLoader implements CommandLineRunner {
 		// Check for data loader config in environment
     String numberofrecords = environment.getProperty("dataloader.numberofrecords");
     if(numberofrecords != null){
-      long desired = Long.parseLong(numberofrecords);
+      LOGGER.info("Dataloader creating " + numberofrecords + " records.");
+      long t1 = System.currentTimeMillis();
+
       long actual = repository.count();
       Person p = new Person();
       Address a = new Address();
@@ -40,6 +45,8 @@ public class DataLoader implements CommandLineRunner {
         repository.save(p);
         actual++;
       }
+      long t2 = System.currentTimeMillis();
+      LOGGER.info("Dataloader created " + (numberofrecords - actual) + " records in " + (t2 - t1)/1000 + " seconds.");
     }
 	}
 
